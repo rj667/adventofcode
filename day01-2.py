@@ -12,12 +12,12 @@ total = 0
 with open(infile, 'r') as input:
     for line in input:
         digits = []
-        for i in range(0, len(line.rstrip())):
-            if line[i].isdigit():
-                digits.append(line[i])
+        for i, char in enumerate(line.rstrip()):
+            if char.isdigit():
+                digits.append(char)
                 continue
-            for j in range(1, len(words)):
-                if line[i:].startswith(words[j]):
+            for j, word in enumerate(words):
+                if line[i:].startswith(word):
                     digits.append(str(j))
                     continue
         number = int(digits[0] + digits[-1])
