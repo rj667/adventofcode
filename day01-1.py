@@ -16,4 +16,4 @@ with open(infile, 'r') as input:
 
 t1 = time.time()
 print(f"Answer: {total}")
-print(f"Execution time: {t1 - t0:.2f} seconds")
+print(f"Execution time: {t1 - t0:.6f} seconds")
