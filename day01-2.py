@@ -4,8 +4,14 @@ import sys
 import time
 
 t0 = time.perf_counter()
-
 infile = sys.argv[0].split('-')[0] + '.input.txt'
+
+# First working implementation after reading the hint on Reddit that:
+# The right calibration values for string "eighthree" is 83 and for "sevenine" is 79.
+#
+# This works by shortening the input line character by character
+# and trying to see if the remainder starts with a (spelled out) digit.
+
 words = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
 total = 0
 
