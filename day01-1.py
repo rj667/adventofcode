@@ -3,7 +3,7 @@
 import sys
 import time
 
-t0 = time.time()
+t0 = time.perf_counter()
 
 infile = sys.argv[0].split('-')[0] + '.input.txt'
 
@@ -14,6 +14,6 @@ with open(infile, 'r') as input:
         number = int(digits[0] + digits[-1])
         total += number
 
-t1 = time.time()
+t1 = time.perf_counter()
 print(f"Answer: {total}")
 print(f"Execution time: {t1 - t0:.6f} seconds")
