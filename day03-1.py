@@ -2,29 +2,26 @@
 
 import sys
 import time
+from pprint import pprint
+
+try:
+    infile = sys.argv[1]
+except IndexError:
+    infile = sys.argv[0].split('-')[0] + '.input.txt'
 
 t0 = time.perf_counter()
 
-infile = sys.argv[0].split('-')[0] + '.example.txt'
-
 schematic = []
 total = 0
+
 with open(infile, 'r') as input:
     y = 0
     for line in input:
+        print(f'{line.rstrip()}')
         schematic.append(line.rstrip())
-        for x, char in enumerate(schematic[-1]):
-            if char != '.':
-                if x > 1:
-                    print(schematic[y][x-1])
-                if y > 1:
-                    if x > 1:
-                        print(schematic[y-1][x-1])
-                    print(schematic[y-1][x])
-                    print(schematic[y-1][x+1])
+        for x, char in enumerate(schematic[y]):
+            pass
         y += 1
-
-print(schematic)
 
 t1 = time.perf_counter()
 print(f"Answer: {total}")
