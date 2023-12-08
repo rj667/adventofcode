@@ -2,12 +2,14 @@
 
 import sys
 import time
+from pprint import pprint
 
 # This solution reads the input lines and adds dots around the borders.
 # Then it loops over the lines char-by-char. If that is a digit, it saves
-# it to the current number and checks the 8 surrounding fields for a symbol.
-# If not, then the current number is complete and will be counted if it
-# has a an adjacent symbol.
+# it to the current number and checks the 8 surrounding fields for a gear.
+# and saves its position. If not, the number is complete and added to the
+# list of numbers associated with that position. In the end every position
+# with exactly two numbers counts towards the answer.
 
 try:
     infile = sys.argv[1]
@@ -24,22 +26,29 @@ data.insert(0, '.' * len(data[0]))
 data.append('.' * len(data[0]))
 
 number = ''
-symbol_adjacent = False
+gear = False
+gears = {}
 for y in range(1, len(data) -1):
     for x in range(1, len(data[0])):
         if data[y][x].isdigit():
             number += data[y][x]
-            if symbol_adjacent:
+            if gear:
                 continue
             for dy,dx in [(-1,-1), (-1,0), (-1,1), (0,-1), (0,1), (1,-1), (1,0), (1,1)]:
-                if not data[y+dy][x+dx].isdigit() and not data[y+dy][x+dx] == '.':
-                    symbol_adjacent = True
+                if data[y+dy][x+dx] == '*':
+                    gear = (y+dy,x+dx)
         else:
             if number:
-                if symbol_adjacent:
-                    total += int(number)
+                if gear:
+                    if gear not in gears:
+                         gears[gear] = []
+                    gears[gear].append(int(number))
                 number = ''
-                symbol_adjacent = False
+                gear = False
+
+for numbers in gears.values():
+    if len(numbers) == 2:
+        total += numbers[0] * numbers[1]
 
 t1 = time.perf_counter()
 print(f"Answer: {total}")
