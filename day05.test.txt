@@ -1,0 +1,5 @@
+seeds: 0 10
+
+seed-to-soil map:
+2000 4 4
+3000 8 4

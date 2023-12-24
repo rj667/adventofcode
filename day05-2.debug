@@ -1,0 +1,25 @@
+seed: 79-92
+soil: 79-92 -> 81-94
+fertilizer: 81-94
+water: 81-94
+light: 81-94 -> 74-87
+temperature: 74-76 -> 78-80
+             77-87 -> 45-55
+humidity: 78-80
+          45-55
+location: 78-80 -> 82-84
+          45-55
+min(82,45) = 45
+
+
+seed: 55-67
+soil: 55-67 -> 57-69
+fertilizer: 57-69
+water: 57-69
+light: 57-69 -> 50-62
+temperature: 50-62 -> 86-98
+humidity: 86-98
+location: 86-92 -> 90-96
+          93-96 -> 56-59
+          97-98
+min(90,56,97)
