@@ -12,35 +12,53 @@ except IndexError:
 t0 = time.perf_counter()
 
 total = 0
-with open(infile, 'r') as file:
-    data = file.read().strip()
-    sections = data.split('\n\n')
-    page_ordering_rules = sections[0].splitlines()
-    pages_to_produce = sections[1].splitlines() if len(sections) > 1 else []
+ordering_rules = {}
+dependency_count = {}
+all_pages = set()
+pages_to_produce = []
 
-# parse page ordering rules
-page_ordering_rules = [list(map(int, rule.split('|'))) for rule in page_ordering_rules]
-page_ordering_rules = sorted(page_ordering_rules, key=lambda x: (x[1], x[0]))
-print(page_ordering_rules)
+with open(infile, 'r') as file:
+    sections = file.read().split('\n\n', 1)
+
+# parse and process ordering rules
+for line in sections[0].splitlines():
+    earlier_page, later_page = map(int, line.strip().split("|"))
+    if earlier_page not in ordering_rules:
+        ordering_rules[earlier_page] = []
+    ordering_rules[earlier_page].append(later_page)
+    dependency_count[later_page] = dependency_count.get(later_page, 0) + 1
+    all_pages.add(earlier_page)
+    all_pages.add(later_page)
+
+# add pages without dependency
+for page in all_pages:
+    if page not in dependency_count:
+        dependency_count[page] = 0
+
+print(f'ordering_rules:\n{ordering_rules}')
+print(f'dependency_count:\n{dependency_count}')
+print(f'all_pages:\n{all_pages}')
 
 # create page ordering
-page_ordering = []
-for first, second in page_ordering_rules:
-    if second not in page_ordering:
-        page_ordering.append(second)
-    if first not in page_ordering:
-        page_ordering.insert(page_ordering.index(second), first)
-    if page_ordering.index(first) > page_ordering.index(second):
-        page_ordering.remove(first)
-        page_ordering.insert(page_ordering.index(second), first)
-print(page_ordering)
+ordered_pages = []
+ready_to_print = [page for page in dependency_count if dependency_count[page] == 0]
+while ready_to_print:
+    current_page = ready_to_print.pop(0)
+    ordered_pages.append(current_page)
+    if current_page in ordering_rules:
+        for dependent_page in ordering_rules[current_page]:
+            dependency_count[dependent_page] -= 1
+            if dependency_count[dependent_page] == 0:
+                ready_to_print.append(dependent_page)
+print(f'ordered_pages:\n{ordered_pages}')
+# parse pages to produce
+for line in sections[1].splitlines():
+    pages_to_produce.append(list(map(int, line.split(','))))
+print(f'pages_to_produce:\n{pages_to_produce}')
 
 # parse pages to produce
-pages_to_produce = [list(map(int, pages.split(','))) for pages in pages_to_produce]
 for pages in pages_to_produce:
-    print(pages)
-    if all(page_ordering.index(x) < page_ordering.index(y) for x, y in zip(pages, pages[1:])):
-        print("yes")
+    if all(ordered_pages.index(x) < ordered_pages.index(y) for x, y in zip(pages, pages[1:])):
         total += pages[len(pages) // 2]
 
 t1 = time.perf_counter()
