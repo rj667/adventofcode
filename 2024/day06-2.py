@@ -78,6 +78,8 @@ while True:
                 case '<':
                     obstacle_y = y
                     obstacle_x = x-1
+            if obstacle_y < 0 or obstacle_x < 0 or obstacle_y >= len(plan) or obstacle_x >= len(plan[obstacle_y]):
+                print("NO COOKIE!")
             if plan[obstacle_y][obstacle_x] != 'O':
                 plan[obstacle_y][obstacle_x] = 'O'
                 total += 1
