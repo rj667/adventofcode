@@ -5,12 +5,9 @@ import time
 from pprint import pprint
 import operator
 
-try:
-    infile = sys.argv[1]
-except IndexError:
-    infile = sys.argv[0].split('-')[0] + '.input.txt'
-
 t0 = time.perf_counter()
+
+infile = sys.argv[1:] and sys.argv[1] or "input.txt"
 
 def is_decreasing(mylist):
     return all(x > y for x, y in zip(mylist, mylist[1:]))

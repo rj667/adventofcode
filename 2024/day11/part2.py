@@ -5,12 +5,9 @@ import time
 from pprint import pprint
 from collections import Counter, defaultdict
 
-try:
-    infile = sys.argv[1]
-except IndexError:
-    infile = sys.argv[0].split('-')[0] + '.input.txt'
-
 t0 = time.perf_counter()
+
+infile = sys.argv[1:] and sys.argv[1] or "input.txt"
 
 def blink(stones):
     new_stones = defaultdict(int)
