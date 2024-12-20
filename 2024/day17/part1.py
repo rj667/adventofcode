@@ -38,50 +38,50 @@ def get_combo(operand, register):
             sys.exit(f'illegal combo operand: {operand}')
     return operand
 
-def instruction_adv(operand, pointer, register):
+def do_adv(operand, pointer, register):
     register['A'] = register['A'] // 2 ** get_combo(operand, register)
     return pointer+2, register
 
-def instruction_bxl(operand, pointer, register):
+def do_bxl(operand, pointer, register):
     register['B'] = register['B'] ^ get_literal(operand)
     return pointer+2, register
 
-def instruction_bst(operand, pointer, register):
+def do_bst(operand, pointer, register):
     register['B'] = get_combo(operand, register) % 8
     return pointer+2, register
 
-def instruction_jnz(operand, pointer, register):
+def do_jnz(operand, pointer, register):
     if register['A'] != 0:
         pointer = get_literal(operand)
     else:
         pointer += 2
     return pointer, register
 
-def instruction_bxc(operand, pointer, register):
+def do_bxc(operand, pointer, register):
     register['B'] = register['B'] ^ register['C']
     return pointer+2, register
 
-def instruction_out(operand, pointer, register):
+def do_out(operand, pointer, register):
     output.append(get_combo(operand, register) % 8)
     return pointer+2, register
 
-def instruction_bdv(operand, pointer, register):
+def do_bdv(operand, pointer, register):
     register['B'] = register['A'] // 2 ** get_combo(operand, register)
     return pointer+2, register
 
-def instruction_cdv(operand, pointer, register):
+def do_cdv(operand, pointer, register):
     register['C'] = register['A'] // 2 ** get_combo(operand, register)
     return pointer+2, register
 
 instruction = [
-    instruction_adv,    #0
-    instruction_bxl,    #1
-    instruction_bst,    #2
-    instruction_jnz,    #3
-    instruction_bxc,    #4
-    instruction_out,    #5
-    instruction_bdv,    #6
-    instruction_cdv,    #7
+    do_adv,    #0
+    do_bxl,    #1
+    do_bst,    #2
+    do_jnz,    #3
+    do_bxc,    #4
+    do_out,    #5
+    do_bdv,    #6
+    do_cdv,    #7
 ]
 
 pointer = 0
@@ -89,9 +89,9 @@ output = []
 while pointer < len(program):
     opcode = program[pointer]
     operand = program[pointer+1]
-    print(f'{opcode} {instruction[opcode].__name__[-3:]} {operand} {pointer:3} {str(register):45}', end=' ')
+    print(f'{pointer:3} {str(register):45} {opcode} {instruction[opcode].__name__[-3:]} {operand}', end=' ')
     pointer, register = instruction[opcode](operand, pointer, register)
-    print(f'{pointer:2} {str(register):45s} {output}')
+    print(f'{pointer:4} {str(register):45s} {output}')
 
 output = ','.join(str(_) for _ in output)
 t1 = time.perf_counter()
