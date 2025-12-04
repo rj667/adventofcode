@@ -12,10 +12,10 @@ total = 0
 with open(infile, 'r') as file:
     data = [line.strip() for line in file]
 
-#pprint(data)
 numbers = 100
 dial = 50
 zeroes = 0
+
 for rotation in data:
     if rotation.startswith('L'):
         rotation = rotation.replace('L', '-')
@@ -25,7 +25,6 @@ for rotation in data:
     full_rotations = value // numbers
     rest_rotation = value - full_rotations * numbers
     dial = (dial + rest_rotation) % numbers
-    zeroes
     if dial == 0:
         zeroes += 1
 
