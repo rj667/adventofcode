@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys
-infile = sys.argv[0].split('part')[0] + '.input'
+infile = sys.argv[0].split('part')[0] + '.example'
 
 class Bingo(Exception):
     pass
@@ -18,7 +18,9 @@ with open(infile, 'r') as input:
         for i in range(boardsize):
             row = list(map(int, input.readline().split()))
             horizontal_board.append(row)
+        print(horizontal_board)
         vertical_board = list(map(list, zip(*horizontal_board)))
+        print(vertical_board)
         boards.extend((horizontal_board, vertical_board))
 
 for number in drawn:
