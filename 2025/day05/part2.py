@@ -11,20 +11,27 @@ infile = sys.argv[1:] and sys.argv[1] or "input.txt"
 total = 0
 with open(infile, 'r') as file:
     data = [line.strip() for line in file]
-    ranges = data[:data.index('')]
-pprint(ranges)
+    input_ranges = data[:data.index('')]
 
-aggregated_ranges = []
-for r in ranges:
-    start, end = map(int, r.split('-'))
-    for ar in aggregated_ranges:
-        if not (end < ar[0] or start > ar[1]):
-            ar[0] = min(ar[0], start)
-            ar[1] = max(ar[1], end)
+while True:
+    merged_ranges = []
+    for ir in input_ranges:
+        if isinstance(ir, str):
+            ir = list(map(int, ir.split('-')))
+        for mr in merged_ranges:
+            if ir[0] <= mr[1] and mr[0] <= ir[1]:
+                mr[0] = min(ir[0], mr[0])
+                mr[1] = max(ir[1], mr[1])
+                break
+        else:
+            merged_ranges.append(ir)
             continue
+    if merged_ranges == input_ranges:
+        break
+    input_ranges = merged_ranges
 
-
-    pprint(newranges)
+for mr in merged_ranges:
+    total += mr[1] - mr[0] +1
 
 t1 = time.perf_counter()
 print(f"Answer: {total}")

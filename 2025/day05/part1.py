@@ -13,7 +13,6 @@ with open(infile, 'r') as file:
     data = [line.strip() for line in file]
     ranges = data[:data.index('')]
     available = list(map(int, data[data.index('')+1:]))
-#pprint(ranges); pprint(available)
 
 for a in available:
     for r in ranges:
