@@ -12,7 +12,6 @@ total = 0
 with open(infile, 'r') as file:
     data = [tuple(map(int, line.strip().split(","))) for line in file]
 
-print(data)
 seen_tiles = []
 largest_area = 0
 for tile in data:
